@@ -1,8 +1,9 @@
 package sockets;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.net.*;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class FibonacciServer {
@@ -19,7 +20,7 @@ public class FibonacciServer {
 				//horcht auf Verbindung mit Client und erstellt neuen Socket
 				client = server.accept();
 				handleConnection(client);
-			} catch(IOException e) {
+			} catch(IOException|IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 			finally {
@@ -34,6 +35,9 @@ public class FibonacciServer {
 	 * @param n die n-te Zahl
 	 */
 	private static int calculateFibonnaci(int n) {
+		if(n> 20) {
+			throw new NoSuchElementException("zahl zu grß");
+		}
 		if(n == 0)
 	        return 0;
 	    else if(n == 1)
@@ -51,10 +55,11 @@ public class FibonacciServer {
 		Scanner input = new Scanner (client.getInputStream());
 		PrintWriter output = new PrintWriter (client.getOutputStream(), true);
 		
-
-		String fibN = input.nextLine();
-
+		try {
+		int fibN = input.nextInt();
 		output.println(calculateFibonnaci(new Integer(fibN)));
-		
+		} catch (NoSuchElementException e){
+			output.println(e);
+		}
 	}
 }

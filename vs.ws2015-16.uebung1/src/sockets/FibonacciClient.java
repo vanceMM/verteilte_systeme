@@ -1,6 +1,8 @@
 package sockets;
 
 import java.net.*;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.*;
 
@@ -9,8 +11,11 @@ public class FibonacciClient {
 	public static void main(String[] args) {
 		
 		Socket server = null;
-		int n, result ;
+		int n;
+		int result ;
 		
+		
+		while (true){
 		try {
 			
 			Scanner in = new Scanner(System.in);
@@ -20,11 +25,27 @@ public class FibonacciClient {
 			PrintWriter output = new PrintWriter (server.getOutputStream(), true);
 			
 			System.out.println("tippen sie eine Zahl n für die n-te Fibonacci Zahl ein");
+			
+			if(!in.hasNextInt()){
+				System.out.println("keine Zahl");
+			} else if(in.equals("")){
+				System.out.println("leerer String");
+			}
+			else
+			{
 			n = in.nextInt();
+
 			output.println(n);
+			try {
 			result = input.nextInt();
 			System.out.println(result);
-		    
+			} catch (NoSuchElementException e) {
+				System.out.println(e);
+			}
+			
+			}
+			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -32,8 +53,11 @@ public class FibonacciClient {
 		}
 		finally {
 		      if ( server != null )
-		        try { server.close(); } catch ( IOException e ) { }
+		        try { 
+		        	server.close(); 
+		        } catch ( IOException e ) { }
 		    }
+		}
 		
 	}
 }
