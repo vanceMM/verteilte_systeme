@@ -8,9 +8,12 @@ import java.util.Scanner;
 
 public class FibonacciServer {
 	
-	public static void main (String[] args) throws IOException {
+	private ServerSocket server;
+	private static Scanner input;
+
+	public FibonacciServer(int port) throws IOException {
 		
-		ServerSocket server = new ServerSocket(8080);
+		server = new ServerSocket(port);
 		
 		while (true) {
 			
@@ -34,7 +37,7 @@ public class FibonacciServer {
 	 * Methode zum berechnen der n-ten Fibonacci Zahl
 	 * @param n die n-te Zahl
 	 */
-	private static int calculateFibonnaci(int n) {
+	public int calculateFibonnaci(int n) {
 		if(n> 20) {
 			throw new NoSuchElementException("zahl zu grß");
 		}
@@ -50,9 +53,9 @@ public class FibonacciServer {
 	/*
 	 * Methode für das Protokoll der Verbindung
 	 */
-	private static void handleConnection( Socket client ) throws IOException {
+	public void handleConnection( Socket client ) throws IOException {
 		
-		Scanner input = new Scanner (client.getInputStream());
+		input = new Scanner (client.getInputStream());
 		PrintWriter output = new PrintWriter (client.getOutputStream(), true);
 		
 		try {

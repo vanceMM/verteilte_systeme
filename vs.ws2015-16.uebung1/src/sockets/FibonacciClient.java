@@ -8,20 +8,22 @@ import java.io.*;
 
 public class FibonacciClient {
 	
-	public static void main(String[] args) {
+
 		
-		Socket server = null;
-		int n;
-		int result ;
+		private Socket server = null;
+		private int n;
+		private int result;
+		private Scanner in;
+		private Scanner input;
 		
-		
+		public FibonacciClient(String adresse, int port){
 		while (true){
 		try {
 			
-			Scanner in = new Scanner(System.in);
-			server = new Socket("localhost", 8080);
+			in = new Scanner(System.in);
+			server = new Socket(adresse, port);
 			
-			Scanner input = new Scanner (server.getInputStream());
+			input = new Scanner (server.getInputStream());
 			PrintWriter output = new PrintWriter (server.getOutputStream(), true);
 			
 			System.out.println("tippen sie eine Zahl n für die n-te Fibonacci Zahl ein");
@@ -58,6 +60,7 @@ public class FibonacciClient {
 		        } catch ( IOException e ) { }
 		    }
 		}
-		
-	}
 }
+}
+	
+
