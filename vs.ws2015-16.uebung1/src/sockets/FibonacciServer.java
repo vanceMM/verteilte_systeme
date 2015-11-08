@@ -13,24 +13,45 @@ public class FibonacciServer {
 
 	public FibonacciServer(int port) throws IOException {
 		
+		System.out.println("server start...");
+		
 		server = new ServerSocket(port);
 		
-		while (true) {
-			
-			Socket client = null;
-			
-			try {
-				//horcht auf Verbindung mit Client und erstellt neuen Socket
-				client = server.accept();
-				handleConnection(client);
-			} catch(IOException|IllegalArgumentException e) {
-				e.printStackTrace();
+
+
+			new Thread( new Runnable()
+			{
+				@Override public void run()
+				{
+					Socket client = null;
+					try {
+						//horcht auf Verbindung mit Client und erstellt neuen Socket
+						client = server.accept();
+						handleConnection(client);
+						System.out.println("server has started...");
+					} catch(IOException|IllegalArgumentException e) {
+						e.printStackTrace();
+					}
+					finally {
+				        if ( client != null )
+				          try { client.close(); } catch ( IOException e ) { }
+				      }
+				}
 			}
-			finally {
-		        if ( client != null )
-		          try { client.close(); } catch ( IOException e ) { }
-		      }
-		}
+			).start();
+//			try {
+//				//horcht auf Verbindung mit Client und erstellt neuen Socket
+//				client = server.accept();
+//				handleConnection(client);
+//				System.out.println("server has started...");
+//			} catch(IOException|IllegalArgumentException e) {
+//				e.printStackTrace();
+//			}
+//			finally {
+//		        if ( client != null )
+//		          try { client.close(); } catch ( IOException e ) { }
+//		      }
+		
 		
 	}
 	/*
