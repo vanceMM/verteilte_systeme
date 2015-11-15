@@ -43,13 +43,14 @@ public class FibonacciTexteingabe {
 	}
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
-
-		
-		server = new FibonacciServer(1234);
-		client = new FibonacciClient("localhost", 8080);
 		
 		FibonacciTexteingabe eingabe = new FibonacciTexteingabe();
 		eingabe.start();
+
+		client = new FibonacciClient("localhost", 5678);
+		
+		
+		
 		
 	}
 	

@@ -7,60 +7,20 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class FibonacciServer {
+
 	
 	private ServerSocket server;
 	private static Scanner input;
 
-	public FibonacciServer(int port) throws IOException {
-		
-		System.out.println("server start...");
-		
-		server = new ServerSocket(port);
-		
 
-
-			new Thread( new Runnable()
-			{
-				@Override public void run()
-				{
-					Socket client = null;
-					try {
-						//horcht auf Verbindung mit Client und erstellt neuen Socket
-						client = server.accept();
-						handleConnection(client);
-						System.out.println("server has started...");
-					} catch(IOException|IllegalArgumentException e) {
-						e.printStackTrace();
-					}
-					finally {
-				        if ( client != null )
-				          try { client.close(); } catch ( IOException e ) { }
-				      }
-				}
-			}
-			).start();
-//			try {
-//				//horcht auf Verbindung mit Client und erstellt neuen Socket
-//				client = server.accept();
-//				handleConnection(client);
-//				System.out.println("server has started...");
-//			} catch(IOException|IllegalArgumentException e) {
-//				e.printStackTrace();
-//			}
-//			finally {
-//		        if ( client != null )
-//		          try { client.close(); } catch ( IOException e ) { }
-//		      }
-		
-		
-	}
+	
 	/*
 	 * Methode zum berechnen der n-ten Fibonacci Zahl
 	 * @param n die n-te Zahl
 	 */
-	public int calculateFibonnaci(int n) {
-		if(n> 20) {
-			throw new NoSuchElementException("zahl zu grß");
+	public static int calculateFibonnaci(int n) {
+		if(n> 11) {
+			throw new IllegalArgumentException("");
 		}
 		if(n == 0)
 	        return 0;
@@ -74,16 +34,40 @@ public class FibonacciServer {
 	/*
 	 * Methode für das Protokoll der Verbindung
 	 */
-	public void handleConnection( Socket client ) throws IOException {
+	public static void handleConnection( Socket client ) throws IOException {
 		
 		input = new Scanner (client.getInputStream());
 		PrintWriter output = new PrintWriter (client.getOutputStream(), true);
-		
+		System.out.println("scanner");
 		try {
 		int fibN = input.nextInt();
+                
+                    System.out.println(fibN);
 		output.println(calculateFibonnaci(new Integer(fibN)));
 		} catch (NoSuchElementException e){
-			output.println(e);
+			output.println(e.getMessage());
 		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		System.out.println("server start...");
+		
+		ServerSocket server = new ServerSocket(5678);
+                                     while ( true ) {
+					Socket client = null;
+					try {
+						//horcht auf Verbindung mit Client und erstellt neuen Socket
+						client = server.accept();
+                                                System.out.println("client verbunden");
+						handleConnection(client);
+						System.out.println("server has started...");
+					} catch(IOException|IllegalArgumentException e) {
+						e.printStackTrace();
+					}
+					finally {
+				        if ( client != null )
+				          try { client.close(); } catch ( IOException e ) { }
+				      }
+                                     }
 	}
 }
