@@ -10,8 +10,10 @@ public class Commands {
 	}
 	
 	public void allCommands() {
-		for(String command: commands) {
-			System.out.println(command);
-		}
+		
+                for(String command : commands) {
+            System.out.print(command + "  ");
+        }
+        System.out.println();
 	}
 }
